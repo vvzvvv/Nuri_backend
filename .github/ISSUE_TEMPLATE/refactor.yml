@@ -1,0 +1,41 @@
+name: "Refactor"
+description: 동작 변화 없이 코드 구조/품질을 개선할 때 사용합니다.
+title: "[Refactor] "
+labels: ["type: refactor"]
+body:
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 배경 / 동기
+      description: 왜 리팩토링이 필요한지 설명해주세요. (가독성, 중복 제거, 성능, 구조 개선 등)
+      placeholder: 예) UserController에 비즈니스 로직이 섞여 있어서 테스트하기 어려움
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 작업 내용
+      description: 어떤 부분을 어떻게 바꿀 것인지 체크리스트로 정리해주세요.
+      placeholder: |
+        - [ ] Service 레이어 분리
+        - [ ] 중복 코드 유틸 함수로 추출
+        - [ ] 네이밍 컨벤션 통일
+    validations:
+      required: true
+
+  - type: textarea
+    id: risk
+    attributes:
+      label: 영향 범위 / 주의사항
+      description: 이 변경이 영향을 줄 수 있는 다른 코드나 기능이 있다면 적어주세요.
+    validations:
+      required: false
+
+  - type: textarea
+    id: done
+    attributes:
+      label: 완료 조건
+      description: 예) 기존 테스트가 모두 통과하고, 기능 동작에는 변화가 없어야 함
+    validations:
+      required: true
