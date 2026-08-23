@@ -12,8 +12,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class ChatMessageService {
+
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRepository chatRepository;
+
     public ChatMessageService(ChatMessageRepository chatMessageRepository, ChatRepository chatRepository) {
         this.chatMessageRepository = chatMessageRepository;
         this.chatRepository = chatRepository;
@@ -29,5 +31,11 @@ public class ChatMessageService {
     public String getSummaryByChatId(Integer chatId) {
         Chat messages = chatRepository.findByChatId(chatId);
         return messages.getSummary();
+    }
+
+    public String getMsgTextByMsgId(String msgId) {
+        ChatMessage chatMessage = chatMessageRepository.findById(msgId)
+                .orElseThrow(() -> new IllegalArgumentException("메시지를 찾을 수 없습니다. msgId = " + msgId));
+        return chatMessage.getMesText();
     }
 }
