@@ -148,7 +148,7 @@ public class GPTService {
                 switch (feedbackType.toLowerCase()) {
                     case "grammar" -> feedback.setGrammar(feedbackContent);
                     case "vocabulary" -> feedback.setVocabulary(feedbackContent);
-                    case "formal / informal" -> feedback.setFormalInformal(feedbackContent);
+                    case "formalinformal" -> feedback.setFormalInformal(feedbackContent);
                     default -> throw new IllegalArgumentException("Invalid feedback type: " + feedbackType);
                 }
 
