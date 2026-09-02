@@ -1,6 +1,5 @@
 package com.nuri.nuribackend.controller;
 
-
 import com.nuri.nuribackend.domain.Feedback.Feedback;
 import com.nuri.nuribackend.domain.Feedback.FeedbackContent;
 import com.nuri.nuribackend.repository.FeedbackRepository;
@@ -9,7 +8,11 @@ import com.nuri.nuribackend.service.GPTService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping("/chatFeedback")
 public class ChatFeedbackController {
 
     private final ChatMessageService chatMessageService;
