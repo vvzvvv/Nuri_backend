@@ -36,6 +36,6 @@ public class ChatMessageService {
     public String getMsgTextByMsgId(String msgId) {
         ChatMessage chatMessage = chatMessageRepository.findById(msgId)
                 .orElseThrow(() -> new IllegalArgumentException("메시지를 찾을 수 없습니다. msgId = " + msgId));
-        return chatMessage.getMesText();
+        return chatMessage.getMsgText();
     }
 }
