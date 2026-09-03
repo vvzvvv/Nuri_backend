@@ -5,6 +5,7 @@ import com.nuri.nuribackend.domain.Feedback.FeedbackContent;
 import com.nuri.nuribackend.repository.FeedbackRepository;
 import com.nuri.nuribackend.service.ChatMessageService;
 import com.nuri.nuribackend.service.GPTService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,11 @@ public class ChatFeedbackController {
     ) {
         String msgText = chatMessageService.getMsgTextByMsgId(msgId);
         Feedback gptFeedback = gptService.handleFeedbackGPT(msgId, msgText, feedbackType);
+
+        if (gptFeedback == null) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
+        }
+
         FeedbackContent filteredFeedback = switch (feedbackType.toLowerCase()) {
             case "grammar" -> gptFeedback.getGrammar();
             case "vocabulary" -> gptFeedback.getVocabulary();
