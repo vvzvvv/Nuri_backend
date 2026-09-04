@@ -4,6 +4,7 @@ import com.nuri.nuribackend.dto.Error.ErrorResponse;
 import com.nuri.nuribackend.exception.AuthenticationException;
 import com.nuri.nuribackend.exception.AuthorizationException;
 import com.nuri.nuribackend.exception.CustomException;
+import com.nuri.nuribackend.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,6 +26,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(ErrorResponse.of("UNAUTHORIZED", ex.getMessage()));
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ErrorResponse.of(ex.getErrorCode(), ex.getMessage()));
     }
 
     // CustomException 처리

@@ -4,6 +4,7 @@ import com.nuri.nuribackend.domain.Chat;
 import com.nuri.nuribackend.domain.ChatMessage;
 import com.nuri.nuribackend.dto.ChatMessageDto;
 import com.nuri.nuribackend.exception.AuthorizationException;
+import com.nuri.nuribackend.exception.NotFoundException;
 import com.nuri.nuribackend.repository.ChatMessageRepository;
 import com.nuri.nuribackend.repository.ChatRepository;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class ChatMessageService {
 
     public String getMsgTextByMsgId(String msgId, Long userId) {
         ChatMessage chatMessage = chatMessageRepository.findById(msgId)
-                .orElseThrow(() -> new IllegalArgumentException("메시지를 찾을 수 없습니다. msgId = " + msgId));
+                .orElseThrow(() -> new NotFoundException("메시지를 찾을 수 없습니다. msgId = " + msgId));
 
         Chat chat = chatRepository.findByChatId(chatMessage.getChatId());
         if (chat == null || !chat.getUser().getId().equals(userId)) {
