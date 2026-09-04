@@ -2,9 +2,12 @@ package com.nuri.nuribackend.controller;
 
 import com.nuri.nuribackend.domain.Feedback.Feedback;
 import com.nuri.nuribackend.domain.Feedback.FeedbackContent;
-import com.nuri.nuribackend.repository.FeedbackRepository;
 import com.nuri.nuribackend.service.ChatMessageService;
 import com.nuri.nuribackend.service.GPTService;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,15 +21,14 @@ public class ChatFeedbackController {
 
     private final ChatMessageService chatMessageService;
     private final GPTService gptService;
-    private final FeedbackRepository feedbackRepository;
-
+    private final MongoTemplate mongoTemplate;
 
     public ChatFeedbackController(ChatMessageService chatMessageService,
                                   GPTService gptService,
-                                  FeedbackRepository feedbackRepository) {
+                                  MongoTemplate mongoTemplate) {
         this.chatMessageService = chatMessageService;
         this.gptService = gptService;
-        this.feedbackRepository = feedbackRepository;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @GetMapping("/{feedbackType}/{msgId}")
@@ -48,7 +50,9 @@ public class ChatFeedbackController {
             default -> throw new IllegalArgumentException("Invalid feedback type: " + feedbackType);
         };
 
-        feedbackRepository.save(gptFeedback);
+        Query query = Query.query(Criteria.where("msgId").is(msgId));
+        Update update = Update.update(feedbackType, filteredFeedback);
+        mongoTemplate.upsert(query, update, Feedback.class);
 
         return ResponseEntity.ok(filteredFeedback);
     }
