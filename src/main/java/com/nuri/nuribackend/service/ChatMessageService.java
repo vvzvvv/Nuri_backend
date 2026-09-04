@@ -3,6 +3,7 @@ package com.nuri.nuribackend.service;
 import com.nuri.nuribackend.domain.Chat;
 import com.nuri.nuribackend.domain.ChatMessage;
 import com.nuri.nuribackend.dto.ChatMessageDto;
+import com.nuri.nuribackend.exception.AuthorizationException;
 import com.nuri.nuribackend.repository.ChatMessageRepository;
 import com.nuri.nuribackend.repository.ChatRepository;
 import org.springframework.stereotype.Service;
@@ -33,9 +34,14 @@ public class ChatMessageService {
         return messages.getSummary();
     }
 
-    public String getMsgTextByMsgId(String msgId) {
+    public String getMsgTextByMsgId(String msgId, Long userId) {
         ChatMessage chatMessage = chatMessageRepository.findById(msgId)
                 .orElseThrow(() -> new IllegalArgumentException("메시지를 찾을 수 없습니다. msgId = " + msgId));
+
+        Chat chat = chatRepository.findByChatId(chatMessage.getChatId());
+        if (chat == null || !chat.getUser().getId().equals(userId)) {
+            throw new AuthorizationException("해당 메시지에 접근할 권한이 없습니다.");
+        }
         return chatMessage.getMsgText();
     }
 }
