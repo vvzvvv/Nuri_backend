@@ -2,7 +2,6 @@ package com.nuri.nuribackend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nuri.nuribackend.domain.Ranking;
-import com.nuri.nuribackend.domain.User;
 import com.nuri.nuribackend.dto.ChatDto;
 import com.nuri.nuribackend.dto.Feedback.RankingDto;
 import com.nuri.nuribackend.dto.User.UserDto;
@@ -25,7 +24,6 @@ import software.amazon.awssdk.services.transcribe.model.TranscriptionJobStatus;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -55,7 +53,7 @@ public class SocketVoiceHandler extends AbstractWebSocketHandler {
         Map<String, Object> attributes = session.getAttributes();
         userName = (String) attributes.get("user_name");
         System.out.println(userName);
-        UserDto userDto = userService.getUserByUserName(userName);
+        UserDto userDto = userService.getUserByEmail(userName);
         ChatDto chatDto= new ChatDto();
 
         chatDto.setUser(userDto.toEntity());
@@ -216,7 +214,7 @@ public class SocketVoiceHandler extends AbstractWebSocketHandler {
         Map<String, Object> attributes = session.getAttributes();
         userName = (String) attributes.get("user_name");
         System.out.println(userName);
-        UserDto userDto = userService.getUserByUserName(userName);
+        UserDto userDto = userService.getUserByEmail(userName);
 
         Optional<Ranking> optionalRanking = rankingRepository.findByUserIdAndYearAndMonth(userDto.getId(), year, month);
 

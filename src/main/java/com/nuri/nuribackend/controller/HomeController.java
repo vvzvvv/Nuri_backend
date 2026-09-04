@@ -59,7 +59,7 @@ public class HomeController {
             throw new RuntimeException("No authentication information.");
         }
 
-        UserDto userDto = userService.getUserByUserName(authentication.getName());
+        UserDto userDto = userService.getUserByEmail(authentication.getName());
         Long userId = userDto.getId();
         log.info("ranking 서비스의 userId: " + userId);
         int userRanking = rankingService.getUserRanking(userId);
@@ -77,7 +77,7 @@ public class HomeController {
             throw new RuntimeException("No authentication information.");
         }
 
-        UserDto userDto = userService.getUserByUserName(authentication.getName());
+        UserDto userDto = userService.getUserByEmail(authentication.getName());
         Long userId = userDto.getId();
 
         return rankingService.getGraph(userId);
@@ -93,7 +93,7 @@ public class HomeController {
             throw new RuntimeException("No authentication information.");
         }
 
-        UserDto userDto = userService.getUserByUserName(authentication.getName());
+        UserDto userDto = userService.getUserByEmail(authentication.getName());
         Long userId = userDto.getId();
 
 
