@@ -1,7 +1,6 @@
 package com.nuri.nuribackend.controller;
 
 import com.nuri.nuribackend.dto.Chat.ChatDto;
-import com.nuri.nuribackend.dto.ChatMessageDto;
 import com.nuri.nuribackend.dto.User.UserDto;
 import com.nuri.nuribackend.service.ChatListService;
 import com.nuri.nuribackend.service.UserService;
@@ -26,12 +25,10 @@ public class ChatListController {
             throw new RuntimeException("No authentication information.");
         }
 
-        UserDto userDto = userService.getUserByUserName(authentication.getName());
-        Long userId = userDto.getId(); // userId 임시로 1
-        System.out.println("userId: "+ userId);
+        UserDto userDto = userService.getUserByEmail(authentication.getName());
+        Long userId = userDto.getId();
         List<ChatDto> chatList;
         chatList = chatListService.getAllChatByUserId(userId);
-        System.out.println("채팅 리스트: " + chatList);
         return ResponseEntity.ok(chatList);
     }
 }

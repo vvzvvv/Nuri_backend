@@ -9,8 +9,6 @@ import com.nuri.nuribackend.exception.CustomException;
 import com.nuri.nuribackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -122,7 +120,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto getUserByUserName(String email) {
+    public UserDto getUserByEmail(String email) {
         try {
             User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new CustomException("USER_NOT_FOUND", "해당 유저를 찾을 수 없습니다."));
